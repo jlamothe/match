@@ -16,15 +16,25 @@
 -- along with this program.  If not, see
 -- <http://www.gnu.org/licenses/>.
 
-module Main (main) where
+module Match.Types ( Product (..)
+                   , Listing (..)
+                   , MatchedData
+                   ) where
 
-import Match
-import Match.Pure
+import Data.Map (Map)
 
-main :: IO ()
-main = do
-  products <- getProducts
-  listings <- getListings
-  output $ matchData products listings
+data Product =
+  Product { productName         :: String
+          , productManufacturer :: String
+          } deriving (Eq, Show)
+
+data Listing =
+  Listing { listingTitle        :: String
+          , listingManufacturer :: String
+          , listingCurrency     :: String
+          , listingPrice        :: String
+          } deriving (Eq, Show)
+
+type MatchedData = Map String [Listing]
 
 -- jl

@@ -16,15 +16,17 @@
 -- along with this program.  If not, see
 -- <http://www.gnu.org/licenses/>.
 
-module Main (main) where
+module Match (getProducts, getListings, output) where
 
-import Match
-import Match.Pure
+import Match.Types
 
-main :: IO ()
-main = do
-  products <- getProducts
-  listings <- getListings
-  output $ matchData products listings
+getProducts :: IO [Product]
+getProducts = undefined
+
+getListings :: IO [Listing]
+getListings = undefined
+
+output :: MatchedData -> IO ()
+output = undefined
 
 -- jl
