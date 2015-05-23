@@ -16,9 +16,18 @@
 -- along with this program.  If not, see
 -- <http://www.gnu.org/licenses/>.
 
-module Match.Pure (matchData) where
+module Match.Pure ( decodeProduct
+                  , decodeListing
+                  , matchData
+                  ) where
 
 import Match.Types
+
+decodeProduct :: String -> Maybe Product
+decodeProduct = undefined
+
+decodeListing :: String -> Maybe Listing
+decodeListing = undefined
 
 matchData :: [Product] -> [Listing] -> MatchedData
 matchData = undefined

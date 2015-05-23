@@ -18,6 +18,7 @@
 
 module Main (main) where
 
+import Data.Maybe (mapMaybe)
 import Match.Pure
 import Match.Types
 import System.Environment (getArgs, getProgName)
@@ -41,12 +42,17 @@ getParams = do
         " [<path_to_products_file> <path_to_listings_file>]"
 
 getProducts :: FilePath -> IO [Product]
-getProducts = undefined
+getProducts filePath = decodeFileWith decodeProduct filePath
 
 getListings :: FilePath -> IO [Listing]
-getListings = undefined
+getListings filePath = decodeFileWith decodeListing filePath
 
 output :: MatchedData -> IO ()
 output = undefined
+
+decodeFileWith :: (String -> Maybe a) -> FilePath -> IO [a]
+decodeFileWith f filePath = do
+  contents <- readFile filePath
+  return $ mapMaybe f $ lines contents
 
 -- jl
