@@ -16,24 +16,11 @@
 -- along with this program.  If not, see
 -- <http://www.gnu.org/licenses/>.
 
-module Main (main) where
+module Tests.DecodeProducts (tests) where
 
-import Test.HUnit ( Test (..)
-                  , Counts (..)
-                  , runTestTT
-                  )
-import qualified Tests.DecodeProduct as DecodeProduct
-import System.Exit
+import Test.HUnit (Test (..))
 
-main :: IO ()
-main = runTestTT tests >>= processCounts
-
-tests = TestList [DecodeProduct.tests]
-
-processCounts :: Counts -> IO ()
-processCounts counts =
-  if errors counts > 0 || failures counts > 0
-  then exitFailure
-  else exitSuccess
+tests = TestLabel "decodeProducts" $
+  TestList []
 
 -- jl

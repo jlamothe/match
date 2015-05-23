@@ -20,4 +20,5 @@ executable match
   -- other-modules:       
   build-depends:       base >=4.5 && <5,
                        containers >=0.5.6.3 && <1,
+                       json >=0.9.1 && <1,
                        HUnit >=1.2.5.2 && <2

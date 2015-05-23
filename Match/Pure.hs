@@ -21,15 +21,44 @@ module Match.Pure ( decodeProduct
                   , matchData
                   ) where
 
+import Data.Map (Map)
+import qualified Data.Map as Map
 import Match.Types
+import qualified Text.JSON as JSON
 
 decodeProduct :: String -> Maybe Product
-decodeProduct = undefined
+decodeProduct rawInput = case JSON.decode rawInput of
+  JSON.Ok (JSON.JSObject obj) ->
+    productFromJSON obj
+  _ -> Nothing
 
 decodeListing :: String -> Maybe Listing
 decodeListing = undefined
 
 matchData :: [Product] -> [Listing] -> MatchedData
 matchData = undefined
+
+productFromJSON :: JSON.JSObject JSON.JSValue -> Maybe Product
+productFromJSON obj = do
+  name         <- stringFromObj "product_name" obj
+  manufacturer <- stringFromObj "manufacturer" obj
+  Just $ Product { productName         = name
+                 , productManufacturer = manufacturer
+                 }
+
+stringFromObj :: String -> JSON.JSObject JSON.JSValue -> Maybe String
+stringFromObj key obj =
+  case valFromObj key obj of
+    Just (JSON.JSString str) ->
+      Just $ JSON.fromJSString str
+    _ -> Nothing
+
+valFromObj :: String -> JSON.JSObject JSON.JSValue -> Maybe JSON.JSValue
+valFromObj key obj =
+  Map.lookup key values
+  where values = objToMap obj
+
+objToMap :: JSON.JSObject JSON.JSValue -> Map String JSON.JSValue
+objToMap = Map.fromList . JSON.fromJSObject
 
 -- jl
