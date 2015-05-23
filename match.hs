@@ -20,6 +20,7 @@ module Main (main) where
 
 import Match.Pure
 import Match.Types
+import System.Environment (getArgs, getProgName)
 
 main :: IO ()
 main = do
@@ -29,7 +30,15 @@ main = do
   output $ matchData products listings
 
 getParams :: IO (FilePath, FilePath)
-getParams = undefined
+getParams = do
+  args <- getArgs
+  case args of
+    []     -> return ("products.txt", "listings.txt")
+    [p, l] -> return (p, l)
+    _      -> do
+      progName <- getProgName
+      error $ "Usage: " ++ progName ++
+        " [<path_to_products_file> <path_to_listings_file>]"
 
 getProducts :: FilePath -> IO [Product]
 getProducts = undefined
