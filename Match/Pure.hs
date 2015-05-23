@@ -27,16 +27,19 @@ import Match.Types
 import qualified Text.JSON as JSON
 
 decodeProduct :: String -> Maybe Product
-decodeProduct rawInput = case JSON.decode rawInput of
-  JSON.Ok (JSON.JSObject obj) ->
-    productFromJSON obj
-  _ -> Nothing
+decodeProduct = decodeWith productFromJSON
 
 decodeListing :: String -> Maybe Listing
-decodeListing = undefined
+decodeListing = decodeWith listingFromJSON
 
 matchData :: [Product] -> [Listing] -> MatchedData
 matchData = undefined
+
+decodeWith :: (JSON.JSObject JSON.JSValue -> Maybe a) -> String -> Maybe a
+decodeWith f rawInput = case JSON.decode rawInput of
+  JSON.Ok (JSON.JSObject obj) ->
+    f obj
+  _ -> Nothing
 
 productFromJSON :: JSON.JSObject JSON.JSValue -> Maybe Product
 productFromJSON obj = do
@@ -44,6 +47,18 @@ productFromJSON obj = do
   manufacturer <- stringFromObj "manufacturer" obj
   Just $ Product { productName         = name
                  , productManufacturer = manufacturer
+                 }
+
+listingFromJSON :: JSON.JSObject JSON.JSValue -> Maybe Listing
+listingFromJSON obj = do
+  title        <- stringFromObj "title" obj
+  manufacturer <- stringFromObj "manufacturer" obj
+  currency     <- stringFromObj "currency" obj
+  price        <- stringFromObj "price" obj
+  Just $ Listing { listingTitle        = title
+                 , listingManufacturer = manufacturer
+                 , listingCurrency     = currency
+                 , listingPrice        = price
                  }
 
 stringFromObj :: String -> JSON.JSObject JSON.JSValue -> Maybe String

@@ -23,12 +23,17 @@ import Test.HUnit ( Test (..)
                   , runTestTT
                   )
 import qualified Tests.DecodeProduct as DecodeProduct
+import qualified Tests.DecodeListing as DecodeListing
 import System.Exit
 
 main :: IO ()
 main = runTestTT tests >>= processCounts
 
-tests = TestList [DecodeProduct.tests]
+tests :: Test
+tests =
+  TestList [ DecodeProduct.tests
+           , DecodeListing.tests
+           ]
 
 processCounts :: Counts -> IO ()
 processCounts counts =

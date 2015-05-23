@@ -16,14 +16,14 @@
 -- along with this program.  If not, see
 -- <http://www.gnu.org/licenses/>.
 
-module Tests.DecodeProduct (tests) where
+module Tests.DecodeListing (tests) where
 
 import Match.Pure
 import Match.Types
 import Test.HUnit (Test (..), (@=?))
 
 tests :: Test
-tests = TestLabel "decodeProduct" $
+tests = TestLabel "decodeListing" $
   TestList $ [ emptyStringTest
              , badInputTest
              , unexpectedJSONTest
@@ -32,28 +32,30 @@ tests = TestLabel "decodeProduct" $
 
 emptyStringTest :: Test
 emptyStringTest = TestLabel "empty string" $
-  TestCase $ Nothing @=? decodeProduct ""
+  TestCase $ Nothing @=? decodeListing ""
 
 badInputTest :: Test
 badInputTest = TestLabel "bad input" $
-  TestCase $ Nothing @=? decodeProduct "foo"
+  TestCase $ Nothing @=? decodeListing "foo"
 
 unexpectedJSONTest :: Test
 unexpectedJSONTest = TestLabel "unexpected JSON" $
-  TestCase $ Nothing @=? decodeProduct "[]"
+  TestCase $ Nothing @=? decodeListing "[]"
 
 goodDataTest :: Test
 goodDataTest = TestLabel "good data" $
-  TestCase $ expected @=? decodeProduct input
+  TestCase $ expected @=? decodeListing input
 
 input :: String
 input =
-  "{\"product_name\":\"Sony_Cyber-shot_DSC-W310\",\"manufacturer\":\"Sony\",\"model\":\"DSC-W310\",\"family\":\"Cyber-shot\",\"announced-date\":\"2010-01-06T19:00:00.000-05:00\"}"
+  "{\"title\":\"LED Flash Macro Ring Light (48 X LED) with 6 Adapter Rings for For Canon/Sony/Nikon/Sigma Lenses\",\"manufacturer\":\"Neewer Electronics Accessories\",\"currency\":\"CAD\",\"price\":\"35.99\"}"
 
-expected :: Maybe Product
+expected :: Maybe Listing
 expected = Just $
-  Product { productName = "Sony_Cyber-shot_DSC-W310"
-          , productManufacturer = "Sony"
+  Listing { listingTitle        = "LED Flash Macro Ring Light (48 X LED) with 6 Adapter Rings for For Canon/Sony/Nikon/Sigma Lenses"
+          , listingManufacturer = "Neewer Electronics Accessories"
+          , listingCurrency     = "CAD"
+          , listingPrice        = "35.99"
           }
 
 -- jl
