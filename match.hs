@@ -18,13 +18,26 @@
 
 module Main (main) where
 
-import Match
 import Match.Pure
+import Match.Types
 
 main :: IO ()
 main = do
-  products <- getProducts
-  listings <- getListings
+  (productFile, listingFile) <- getParams
+  products <- getProducts productFile
+  listings <- getListings listingFile
   output $ matchData products listings
+
+getParams :: IO (FilePath, FilePath)
+getParams = undefined
+
+getProducts :: FilePath -> IO [Product]
+getProducts = undefined
+
+getListings :: FilePath -> IO [Listing]
+getListings = undefined
+
+output :: MatchedData -> IO ()
+output = undefined
 
 -- jl
