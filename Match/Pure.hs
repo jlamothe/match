@@ -45,9 +45,9 @@ productFromJSON :: JSON.JSObject JSON.JSValue -> Maybe Product
 productFromJSON obj = do
   name         <- stringFromObj "product_name" obj
   manufacturer <- stringFromObj "manufacturer" obj
-  Just $ Product { productName         = name
-                 , productManufacturer = manufacturer
-                 }
+  Just Product { productName         = name
+               , productManufacturer = manufacturer
+               }
 
 listingFromJSON :: JSON.JSObject JSON.JSValue -> Maybe Listing
 listingFromJSON obj = do
@@ -55,11 +55,11 @@ listingFromJSON obj = do
   manufacturer <- stringFromObj "manufacturer" obj
   currency     <- stringFromObj "currency" obj
   price        <- stringFromObj "price" obj
-  Just $ Listing { listingTitle        = title
-                 , listingManufacturer = manufacturer
-                 , listingCurrency     = currency
-                 , listingPrice        = price
-                 }
+  Just Listing { listingTitle        = title
+               , listingManufacturer = manufacturer
+               , listingCurrency     = currency
+               , listingPrice        = price
+               }
 
 stringFromObj :: String -> JSON.JSObject JSON.JSValue -> Maybe String
 stringFromObj key obj =

@@ -24,11 +24,11 @@ import Test.HUnit (Test (..), (@=?))
 
 tests :: Test
 tests = TestLabel "decodeListing" $
-  TestList $ [ emptyStringTest
-             , badInputTest
-             , unexpectedJSONTest
-             , goodDataTest
-             ]
+  TestList [ emptyStringTest
+           , badInputTest
+           , unexpectedJSONTest
+           , goodDataTest
+           ]
 
 emptyStringTest :: Test
 emptyStringTest = TestLabel "empty string" $
@@ -51,7 +51,7 @@ input =
   "{\"title\":\"LED Flash Macro Ring Light (48 X LED) with 6 Adapter Rings for For Canon/Sony/Nikon/Sigma Lenses\",\"manufacturer\":\"Neewer Electronics Accessories\",\"currency\":\"CAD\",\"price\":\"35.99\"}"
 
 expected :: Maybe Listing
-expected = Just $
+expected = Just
   Listing { listingTitle        = "LED Flash Macro Ring Light (48 X LED) with 6 Adapter Rings for For Canon/Sony/Nikon/Sigma Lenses"
           , listingManufacturer = "Neewer Electronics Accessories"
           , listingCurrency     = "CAD"

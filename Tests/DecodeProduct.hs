@@ -24,11 +24,11 @@ import Test.HUnit (Test (..), (@=?))
 
 tests :: Test
 tests = TestLabel "decodeProduct" $
-  TestList $ [ emptyStringTest
-             , badInputTest
-             , unexpectedJSONTest
-             , goodDataTest
-             ]
+  TestList [ emptyStringTest
+           , badInputTest
+           , unexpectedJSONTest
+           , goodDataTest
+           ]
 
 emptyStringTest :: Test
 emptyStringTest = TestLabel "empty string" $
@@ -51,7 +51,7 @@ input =
   "{\"product_name\":\"Sony_Cyber-shot_DSC-W310\",\"manufacturer\":\"Sony\",\"model\":\"DSC-W310\",\"family\":\"Cyber-shot\",\"announced-date\":\"2010-01-06T19:00:00.000-05:00\"}"
 
 expected :: Maybe Product
-expected = Just $
+expected = Just
   Product { productName = "Sony_Cyber-shot_DSC-W310"
           , productManufacturer = "Sony"
           }

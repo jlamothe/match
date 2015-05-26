@@ -42,10 +42,10 @@ getParams = do
         " [<path_to_products_file> <path_to_listings_file>]"
 
 getProducts :: FilePath -> IO [Product]
-getProducts filePath = decodeFileWith decodeProduct filePath
+getProducts = decodeFileWith decodeProduct
 
 getListings :: FilePath -> IO [Listing]
-getListings filePath = decodeFileWith decodeListing filePath
+getListings = decodeFileWith decodeListing
 
 output :: MatchedData -> IO ()
 output = undefined
