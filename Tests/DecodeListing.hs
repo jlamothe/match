@@ -23,7 +23,7 @@ import Match.Types
 import Test.HUnit (Test (..), (@=?))
 
 tests :: Test
-tests = TestLabel "decodeListing" $
+tests = TestLabel "Match.Pure.decodeListing" $
   TestList [ emptyStringTest
            , badInputTest
            , unexpectedJSONTest
