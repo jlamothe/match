@@ -18,6 +18,7 @@
 
 module Match.Types ( Product (..)
                    , Listing (..)
+                   , SearchIndex (..)
                    , MatchedData
                    ) where
 
@@ -34,6 +35,11 @@ data Listing =
           , listingCurrency     :: String
           , listingPrice        :: String
           } deriving (Eq, Show)
+
+data SearchIndex =
+  SearchIndex { titleSignature        :: [String]
+              , manufacturerSignature :: [String]
+              } deriving (Eq, Show)
 
 type MatchedData = Map String [Listing]
 

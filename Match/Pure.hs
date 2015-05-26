@@ -24,6 +24,7 @@ module Match.Pure ( decodeProduct
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Match.Types
+import Match.Indexable
 import qualified Text.JSON as JSON
 
 decodeProduct :: String -> Maybe Product
@@ -33,7 +34,11 @@ decodeListing :: String -> Maybe Listing
 decodeListing = decodeWith listingFromJSON
 
 matchData :: [Product] -> [Listing] -> MatchedData
-matchData = undefined
+matchData products listings =
+  foldl (findMatch indexedProducts) Map.empty indexedListings
+  where
+    indexedProducts = makeIndex products
+    indexedListings = makeIndex listings
 
 decodeWith :: (JSON.JSObject JSON.JSValue -> Maybe a) -> String -> Maybe a
 decodeWith f rawInput = case JSON.decode rawInput of
@@ -75,5 +80,35 @@ valFromObj key obj =
 
 objToMap :: JSON.JSObject JSON.JSValue -> Map String JSON.JSValue
 objToMap = Map.fromList . JSON.fromJSObject
+
+findMatch
+  :: [(SearchIndex, Product)]
+  -> MatchedData
+  -> (SearchIndex, Listing)
+  -> MatchedData
+findMatch [] s _ = s
+findMatch ((pIndex, product) : xs) s indexedListing@(lIndex, listing)
+  | compareIndex pIndex lIndex = addToMatch product listing s
+  | otherwise                  = findMatch xs s indexedListing
+
+compareIndex :: SearchIndex -> SearchIndex -> Bool
+compareIndex a b = compareSignature titleA titleB &&
+  compareSignature manufacturerA manufacturerB
+  where
+    titleA        = titleSignature a
+    titleB        = titleSignature b
+    manufacturerA = manufacturerSignature a
+    manufacturerB = manufacturerSignature b
+
+compareSignature :: [String] -> [String] -> Bool
+compareSignature a b =
+  all (`elem` b) a
+
+addToMatch :: Product -> Listing -> MatchedData -> MatchedData
+addToMatch product listing s =
+  Map.insert key (listing : prevList) s
+  where
+    key = productName product
+    prevList = Map.findWithDefault [] key s
 
 -- jl

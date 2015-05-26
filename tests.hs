@@ -24,6 +24,7 @@ import Test.HUnit ( Test (..)
                   )
 import qualified Tests.DecodeProduct as DecodeProduct
 import qualified Tests.DecodeListing as DecodeListing
+import qualified Tests.MatchData as MatchData
 import System.Exit
 
 main :: IO ()
@@ -33,6 +34,7 @@ tests :: Test
 tests =
   TestList [ DecodeProduct.tests
            , DecodeListing.tests
+           , MatchData.tests
            ]
 
 processCounts :: Counts -> IO ()
