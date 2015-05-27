@@ -16,42 +16,22 @@
 -- along with this program.  If not, see
 -- <http://www.gnu.org/licenses/>.
 
-module Tests.DecodeListing (tests) where
+module Tests.Decodable.Listing (tests) where
 
-import Match.Pure
+import Match.Decodable
 import Match.Types
-import Test.HUnit (Test (..), (@=?))
+import Test.HUnit (Test (..))
+import qualified Tests.Decodable.Common as Common
 
 tests :: Test
-tests = TestLabel "Match.Pure.decodeListing" $
-  TestList [ emptyStringTest
-           , badInputTest
-           , unexpectedJSONTest
-           , goodDataTest
-           ]
-
-emptyStringTest :: Test
-emptyStringTest = TestLabel "empty string" $
-  TestCase $ Nothing @=? decodeListing ""
-
-badInputTest :: Test
-badInputTest = TestLabel "bad input" $
-  TestCase $ Nothing @=? decodeListing "foo"
-
-unexpectedJSONTest :: Test
-unexpectedJSONTest = TestLabel "unexpected JSON" $
-  TestCase $ Nothing @=? decodeListing "[]"
-
-goodDataTest :: Test
-goodDataTest = TestLabel "good data" $
-  TestCase $ expected @=? decodeListing input
+tests = Common.tests "Listing" expected input
 
 input :: String
 input =
   "{\"title\":\"LED Flash Macro Ring Light (48 X LED) with 6 Adapter Rings for For Canon/Sony/Nikon/Sigma Lenses\",\"manufacturer\":\"Neewer Electronics Accessories\",\"currency\":\"CAD\",\"price\":\"35.99\"}"
 
-expected :: Maybe Listing
-expected = Just
+expected :: Listing
+expected =
   Listing { listingTitle        = "LED Flash Macro Ring Light (48 X LED) with 6 Adapter Rings for For Canon/Sony/Nikon/Sigma Lenses"
           , listingManufacturer = "Neewer Electronics Accessories"
           , listingCurrency     = "CAD"

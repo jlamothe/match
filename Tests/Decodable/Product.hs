@@ -16,42 +16,22 @@
 -- along with this program.  If not, see
 -- <http://www.gnu.org/licenses/>.
 
-module Tests.DecodeProduct (tests) where
+module Tests.Decodable.Product (tests) where
 
-import Match.Pure
+import Match.Decodable
 import Match.Types
-import Test.HUnit (Test (..), (@=?))
+import Test.HUnit (Test (..))
+import qualified Tests.Decodable.Common as Common
 
 tests :: Test
-tests = TestLabel "Match.Pure.decodeProduct" $
-  TestList [ emptyStringTest
-           , badInputTest
-           , unexpectedJSONTest
-           , goodDataTest
-           ]
-
-emptyStringTest :: Test
-emptyStringTest = TestLabel "empty string" $
-  TestCase $ Nothing @=? decodeProduct ""
-
-badInputTest :: Test
-badInputTest = TestLabel "bad input" $
-  TestCase $ Nothing @=? decodeProduct "foo"
-
-unexpectedJSONTest :: Test
-unexpectedJSONTest = TestLabel "unexpected JSON" $
-  TestCase $ Nothing @=? decodeProduct "[]"
-
-goodDataTest :: Test
-goodDataTest = TestLabel "good data" $
-  TestCase $ expected @=? decodeProduct input
+tests = Common.tests "Product" expected input
 
 input :: String
 input =
   "{\"product_name\":\"Sony_Cyber-shot_DSC-W310\",\"manufacturer\":\"Sony\",\"model\":\"DSC-W310\",\"family\":\"Cyber-shot\",\"announced-date\":\"2010-01-06T19:00:00.000-05:00\"}"
 
-expected :: Maybe Product
-expected = Just
+expected :: Product
+expected =
   Product { productName = "Sony_Cyber-shot_DSC-W310"
           , productManufacturer = "Sony"
           }

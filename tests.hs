@@ -22,8 +22,7 @@ import Test.HUnit ( Test (..)
                   , Counts (..)
                   , runTestTT
                   )
-import qualified Tests.DecodeProduct as DecodeProduct
-import qualified Tests.DecodeListing as DecodeListing
+import qualified Tests.Decodable as Decodable
 import qualified Tests.MatchData as MatchData
 import System.Exit
 
@@ -32,10 +31,7 @@ main = runTestTT tests >>= processCounts
 
 tests :: Test
 tests =
-  TestList [ DecodeProduct.tests
-           , DecodeListing.tests
-           , MatchData.tests
-           ]
+  TestList [Decodable.tests, MatchData.tests]
 
 processCounts :: Counts -> IO ()
 processCounts counts =

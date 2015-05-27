@@ -16,33 +16,24 @@
 -- along with this program.  If not, see
 -- <http://www.gnu.org/licenses/>.
 
-module Main (main) where
+module Tests.Decodable.Common (tests) where
 
-import Data.Maybe (mapMaybe)
 import Match.Decodable
-import Match.Pure
-import Match.Types
-import System.Environment (getArgs, getProgName)
+import Test.HUnit (Test (..), (@=?))
 
-main :: IO ()
-main = do
-  (productFile, listingFile) <- getParams
-  products <- decodeFile productFile
-  listings <- decodeFile listingFile
-  output $ matchData products listings
+tests :: (Decodable d, Eq d, Show d) => String -> d -> String -> Test
+tests label expected input =
+  TestLabel label $
+  TestList $ map test
+  [ ("empty input",     Nothing,       ""   )
+  , ("invalid input",   Nothing,       "foo")
+  , ("unexpected JSON", Nothing,       "[]" )
+  , ("valid input",     Just expected, input)
+  ]
 
-getParams :: IO (FilePath, FilePath)
-getParams = do
-  args <- getArgs
-  case args of
-    []     -> return ("products.txt", "listings.txt")
-    [p, l] -> return (p, l)
-    _      -> do
-      progName <- getProgName
-      error $ "Usage: " ++ progName ++
-        " [<path_to_products_file> <path_to_listings_file>]"
-
-output :: MatchedData -> IO ()
-output = undefined
+test :: (Decodable d, Eq d, Show d) => (String, Maybe d, String) -> Test
+test (label, expected, input) =
+  TestLabel label $
+  TestCase $ expected @=? decode input
 
 -- jl
