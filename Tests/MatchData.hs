@@ -30,7 +30,14 @@ import Test.HUnit ( Test (..)
 
 tests :: Test
 tests = TestLabel "Match.Pure.matchData" $
-  TestList [listMatchTests "keys" (Map.keys expected) (Map.keys actual)]
+  TestList [ listMatchTests "keys" (Map.keys expected) (Map.keys actual)
+           , recordTests
+           ]
+
+recordTests :: Test
+recordTests = TestLabel "record tests" $
+  TestList $ map (\key -> listMatchTests key (expected ! key) (actual ! key)) $
+  Map.keys expected
 
 listMatchTests :: (Eq a, Show a) => String -> [a] -> [a] -> Test
 listMatchTests label expected actual =
