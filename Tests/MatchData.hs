@@ -19,18 +19,41 @@
 module Tests.MatchData (tests) where
 
 import Data.Char
+import Data.Map ((!))
 import qualified Data.Map as Map
 import Match.Types
 import Match.Pure
-import Test.HUnit (Test (..), (@=?))
+import Test.HUnit ( Test (..)
+                  , assertBool
+                  , (@=?)
+                  )
 
 tests :: Test
 tests = TestLabel "Match.Pure.matchData" $
-  TestList [recordCountTest]
+  TestList [listMatchTests "keys" (Map.keys expected) (Map.keys actual)]
 
-recordCountTest :: Test
-recordCountTest = TestLabel "record counts" $
-  TestCase $ Map.size expected @=? Map.size actual
+listMatchTests :: (Eq a, Show a) => String -> [a] -> [a] -> Test
+listMatchTests label expected actual =
+  TestLabel label $
+  TestList [ listCountTest expected actual
+           , listComparisonTest expected actual
+           ]
+
+listCountTest :: [a] -> [a] -> Test
+listCountTest expected actual =
+  TestLabel "element counts" $
+  TestCase $ length expected @=? length actual
+
+listComparisonTest :: (Eq a, Show a) => [a] -> [a] -> Test
+listComparisonTest expected actual =
+  TestLabel "element comparison" $
+  TestList $ map (listElementTest actual) expected
+
+listElementTest :: (Eq a, Show a) => [a] -> a -> Test
+listElementTest list element =
+  TestLabel (show element) $
+  TestCase $ assertBool (show element ++ " not found in list: " ++ show list) $
+  element `elem` list
 
 inputProducts :: [Product]
 inputProducts = [productA, productB]
