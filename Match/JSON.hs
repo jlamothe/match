@@ -62,7 +62,12 @@ instance JSON Listing where
                     }
   readJSON _ = JSON.Error "could not build Listing from JSON"
 
-  showJSON = undefined
+  showJSON x = JSON.JSObject $ JSON.toJSObject
+    [ ("title",        JSON.JSString $ JSON.toJSString $ listingTitle x       )
+    , ("manufacturer", JSON.JSString $ JSON.toJSString $ listingManufacturer x)
+    , ("currency",     JSON.JSString $ JSON.toJSString $ listingCurrency x    )
+    , ("price",        JSON.JSString $ JSON.toJSString $ listingPrice x       )
+    ]
 
 stringFromObj :: String -> JSON.JSObject JSON.JSValue -> JSON.Result String
 stringFromObj key obj = do

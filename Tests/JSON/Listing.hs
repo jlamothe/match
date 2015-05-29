@@ -20,18 +20,26 @@ module Tests.JSON.Listing (tests) where
 
 import Match.JSON
 import Match.Types
-import Test.HUnit (Test (..))
+import Test.HUnit (Test (..), (@=?))
 import qualified Tests.JSON.Common as Common
+import qualified Text.JSON as JSON
 
 tests :: Test
-tests = Common.tests "Listing" expected input
+tests = TestLabel "Listing" $
+  TestList [ Common.tests "decode" cooked raw
+           , encodeTest
+           ]
 
-input :: String
-input =
+encodeTest :: Test
+encodeTest = TestLabel "Text.JSON.showJSON" $
+  TestCase $ JSON.decode raw @=? JSON.Ok (JSON.showJSON cooked)
+
+raw :: String
+raw =
   "{\"title\":\"LED Flash Macro Ring Light (48 X LED) with 6 Adapter Rings for For Canon/Sony/Nikon/Sigma Lenses\",\"manufacturer\":\"Neewer Electronics Accessories\",\"currency\":\"CAD\",\"price\":\"35.99\"}"
 
-expected :: Listing
-expected =
+cooked :: Listing
+cooked =
   Listing { listingTitle        = "LED Flash Macro Ring Light (48 X LED) with 6 Adapter Rings for For Canon/Sony/Nikon/Sigma Lenses"
           , listingManufacturer = "Neewer Electronics Accessories"
           , listingCurrency     = "CAD"
