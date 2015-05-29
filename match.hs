@@ -43,6 +43,6 @@ getParams = do
         " [<path_to_products_file> <path_to_listings_file>]"
 
 output :: MatchedData -> IO ()
-output = undefined
+output = putStr . encode
 
 -- jl

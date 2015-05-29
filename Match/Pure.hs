@@ -16,7 +16,7 @@
 -- along with this program.  If not, see
 -- <http://www.gnu.org/licenses/>.
 
-module Match.Pure (matchData) where
+module Match.Pure (matchData, stripLines) where
 
 import qualified Data.Map as Map
 import Match.Types
@@ -28,6 +28,9 @@ matchData products listings =
   where
     indexedProducts = makeIndex products
     indexedListings = makeIndex listings
+
+stripLines :: String -> String
+stripLines = filter (/= '\n')
 
 findMatch
   :: [(SearchIndex, Product)]

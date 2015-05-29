@@ -16,31 +16,13 @@
 -- along with this program.  If not, see
 -- <http://www.gnu.org/licenses/>.
 
-module Main (main) where
+module Tests.StripLines (tests) where
 
-import Test.HUnit ( Test (..)
-                  , Counts (..)
-                  , runTestTT
-                  )
-import qualified Tests.JSON as JSON
-import qualified Tests.MatchData as MatchData
-import qualified Tests.StripLines as StripLines
-import System.Exit
-
-main :: IO ()
-main = runTestTT tests >>= processCounts
+import Match.Pure
+import Test.HUnit (Test (..), (@=?))
 
 tests :: Test
-tests =
-  TestList [ JSON.tests
-           , MatchData.tests
-           , StripLines.tests
-           ]
-
-processCounts :: Counts -> IO ()
-processCounts counts =
-  if errors counts > 0 || failures counts > 0
-  then exitFailure
-  else exitSuccess
+tests = TestLabel "Match.Pure.stripLines" $
+  TestCase $ "abcd" @=? stripLines "a\nbc\nd"
 
 -- jl

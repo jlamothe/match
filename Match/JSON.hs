@@ -16,11 +16,12 @@
 -- along with this program.  If not, see
 -- <http://www.gnu.org/licenses/>.
 
-module Match.JSON (decode, decodeFile) where
+module Match.JSON (decode, decodeFile, encode) where
 
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe (mapMaybe)
+import Match.Pure
 import Match.Types
 import Text.JSON (JSON)
 import qualified Text.JSON as JSON
@@ -33,6 +34,9 @@ decodeFile filePath = do
 
 decode :: JSON j => String -> Maybe j
 decode rawInput = toMaybe $ JSON.decode rawInput
+
+encode :: MatchedData -> String
+encode = unlines . map (stripLines . encodeRecord) . Map.toList
 
 toMaybe :: JSON.Result a -> Maybe a
 toMaybe (JSON.Ok val) = Just val
@@ -86,5 +90,11 @@ valFromObj key obj =
 
 objToMap :: JSON.JSObject JSON.JSValue -> Map String JSON.JSValue
 objToMap = Map.fromList . JSON.fromJSObject
+
+encodeRecord :: (String, [Listing]) -> String
+encodeRecord (title, listings) = JSON.encode $ JSON.JSObject $ JSON.toJSObject
+  [ ("product_name", JSON.showJSON title   )
+  , ("listings",     JSON.showJSON listings)
+  ]
 
 -- jl
