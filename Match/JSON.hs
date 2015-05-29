@@ -63,10 +63,10 @@ instance JSON Listing where
   readJSON _ = JSON.Error "could not build Listing from JSON"
 
   showJSON x = JSON.JSObject $ JSON.toJSObject
-    [ ("title",        JSON.JSString $ JSON.toJSString $ listingTitle x       )
-    , ("manufacturer", JSON.JSString $ JSON.toJSString $ listingManufacturer x)
-    , ("currency",     JSON.JSString $ JSON.toJSString $ listingCurrency x    )
-    , ("price",        JSON.JSString $ JSON.toJSString $ listingPrice x       )
+    [ ("title",        JSON.showJSON $ listingTitle x       )
+    , ("manufacturer", JSON.showJSON $ listingManufacturer x)
+    , ("currency",     JSON.showJSON $ listingCurrency x    )
+    , ("price",        JSON.showJSON $ listingPrice x       )
     ]
 
 stringFromObj :: String -> JSON.JSObject JSON.JSValue -> JSON.Result String
