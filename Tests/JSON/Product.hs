@@ -16,12 +16,12 @@
 -- along with this program.  If not, see
 -- <http://www.gnu.org/licenses/>.
 
-module Tests.Decodable.Product (tests) where
+module Tests.JSON.Product (tests) where
 
-import Match.Decodable
+import Match.JSON
 import Match.Types
 import Test.HUnit (Test (..))
-import qualified Tests.Decodable.Common as Common
+import qualified Tests.JSON.Common as Common
 
 tests :: Test
 tests = Common.tests "Product" expected input

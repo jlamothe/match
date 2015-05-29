@@ -16,15 +16,25 @@
 -- along with this program.  If not, see
 -- <http://www.gnu.org/licenses/>.
 
-module Tests.Decodable (tests) where
+module Tests.JSON.Common (tests) where
 
-import Test.HUnit (Test (..))
-import qualified Tests.Decodable.Product as Product
-import qualified Tests.Decodable.Listing as Listing
+import Match.JSON
+import Test.HUnit (Test (..), (@=?))
+import Text.JSON (JSON)
 
-tests :: Test
-tests = TestLabel "Tests.Decodable.Decodable" $
-  TestList [Product.tests, Listing.tests]
+tests :: (JSON d, Eq d, Show d) => String -> d -> String -> Test
+tests label expected input =
+  TestLabel label $
+  TestList $ map test
+  [ ("empty input",     Nothing,       ""   )
+  , ("invalid input",   Nothing,       "foo")
+  , ("unexpected JSON", Nothing,       "[]" )
+  , ("valid input",     Just expected, input)
+  ]
+
+test :: (JSON d, Eq d, Show d) => (String, Maybe d, String) -> Test
+test (label, expected, input) =
+  TestLabel label $
+  TestCase $ expected @=? decode input
 
 -- jl
-

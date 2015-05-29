@@ -19,7 +19,7 @@
 module Main (main) where
 
 import Data.Maybe (mapMaybe)
-import Match.Decodable
+import Match.JSON
 import Match.Pure
 import Match.Types
 import System.Environment (getArgs, getProgName)
