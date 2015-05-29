@@ -51,4 +51,4 @@ halt` or removed from the system entirely with `vagrant destroy`.
 ## Tests
 
 This project was built using test driven development.  The test suite
-can be run after compilation with the command `runhaskell tests.hs`.
+can be run after compilation with the command: `runhaskell tests.hs`
