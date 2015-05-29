@@ -47,3 +47,8 @@ The project root will be mounted into `/vagrant` on this VM.
 
 Once the VM is no longer required, it ca be stopped with `vagrant
 halt` or removed from the system entirely with `vagrant destroy`.
+
+## Tests
+
+This project was built using test driven development.  The test suite
+can be run after compilation with the command `runhaskell tests.hs`.
