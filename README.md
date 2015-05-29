@@ -43,5 +43,7 @@ the project's root directory.
 After which time, they can connect to the VM by with the command
 `vagrant ssh`.
 
+The project root will be mounted into `/vagrant` on this VM.
+
 Once the VM is no longer required, it ca be stopped with `vagrant
 halt` or removed from the system entirely with `vagrant destroy`.
